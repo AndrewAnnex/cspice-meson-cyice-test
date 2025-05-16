@@ -1,0 +1,13 @@
+[wrap-file]
+directory = cspice
+source_url = https://naif.jpl.nasa.gov/pub/naif/misc/toolkit_N0067/C/MacM1_OSX_clang_64bit/packages/cspice.tar.Z
+source_filename = cspice.tar.Z
+source_hash = 0deae048443e11ca4d093cac651d9785d4f2594631a183d85a3d58949f4d0aa9
+
+# Apply patch to inject a meson.build
+diff_files = [
+  'meson-build.patch',
+]
+
+[provide]
+dependency_names = cspice

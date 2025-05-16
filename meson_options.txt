@@ -1,0 +1,15 @@
+# Define the CSPICE version, local‐source override, and macOS-ARM flag
+option('cspice_version',
+       type : 'string',
+       value : 'N0067',
+       description : 'Version of CSPICE to download')
+
+option('cspice_source_dir',
+       type : 'string',
+       value : '',
+       description : 'If set, use this directory as the CSPICE source tree instead of downloading.')
+
+option('build_macos_arm',
+       type : 'boolean',
+       value : false,
+       description : 'Force build for macOS arm64 (even on Intel hosts)')
