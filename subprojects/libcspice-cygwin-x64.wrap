@@ -1,0 +1,11 @@
+[wrap-file]
+directory = libcspice
+source_url = https://raw.githubusercontent.com/AndrewAnnex/cspice-release-mirror/refs/heads/main/artifacts/N67_cyg_x64_cspice.tar.gz
+source_filename = N67_cyg_x64_cspice.tar.gz
+source_hash = 78ca611638653e1b86347d2b58d8bc761c256e5d0037314fcb7c3eedb3e981bd
+
+# Apply patch to inject a meson.build
+diff_files = meson-build.patch
+
+[provide]
+dependency_names = libcspice-cygwin-x64

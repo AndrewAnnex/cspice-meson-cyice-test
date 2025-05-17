@@ -1,27 +1,22 @@
-project('CSPICE', 'c',
-  version : get_option('cspice_version'),
-  meson_version : '>=0.55.0'
+project('test-cspice', 'c')
+
+cspice_dep = dependency(
+    'libcspice', 
+    fallback: 'libcspice-macos-arm'
 )
-# get basic info
-host = host_machine()
-system = host.system()
-arch = host.cpu_family()
-# get the compiler
+
+# grab C compiler object
 cc = meson.get_compiler('c')
-# Log the compiler
-message('Using C Compiler: ' + cc.get_id())
-message('C Compiler family: ' + arch)
 
-# determine the build to run
-if system == 'windows'
-  wrap_name = 'mylib-windows'
-elif system == 'darwin'
-  wrap_name = 'mylib-macos'
-else
-  wrap_name = 'mylib-linux'
-endif
+# locate math lib if you want a proper dependency object (optional)
+m_dep = cc.find_library('m', required: false)
 
+# Build the test executable
+test_exe = executable(
+    'test_cspice', 
+    'test_cspice.c',
+    dependencies      : [ cspice_dep, m_dep ],
+    install: false
+)
 
-# get the math library if needed
-m_dep = cc.find_library('m', required : false)
-
+test('cspice sanity', test_exe)

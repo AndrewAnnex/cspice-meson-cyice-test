@@ -1,17 +1,18 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,22 @@
+@@ -0,0 +1,2270 @@
 +# Define the project
 +project(
-+    'cspice', 
++    'libcspice', 
 +    'c',
-+    version: '67',
-     license: ''
++    version: '67'
 +)
-+
++# Import FS to test for an existing directory
++fs = import('fs')
++# grab C compiler object
++cc = meson.get_compiler('c')
 +# Where headers live
 +cspice_inc = include_directories('include')
-+
 +# List all C source Files
 +cspice_src = files(
 + './src/cspice/abort_.c',
@@ -2244,11 +2245,21 @@
 + './src/cspice/zzxlated.c',
 + './src/cspice/zzxlatei.c',
 +)
++# get the windows def file
++win_def = files('cspice.def')[0]
++# locate math lib if you want a proper dependency object (optional)
++m_dep = cc.find_library('m', required: false)
 +
 +libcspice = shared_library(
-+  'cspice',
++  'libcspice',
 +  cspice_src,
 +  include_directories: cspice_inc,
++  dependencies : m_dep,
++  soversion: '1',
++  version: '67',
++  darwin_versions: [67, 1],
++  vs_module_defs: win_def, 
++  c_args     : ['-std=c89', '-O3', '-fPIC', '-ansi', '-w'],
 +  install: false 
 +)
 +
@@ -2259,4 +2270,4 @@
 +  version: meson.project_version(),
 +)
 +
-+meson.override_dependency('cspice', cspice_dp)
++meson.override_dependency('libcspice', cspice_dep)

@@ -1,0 +1,7 @@
+build/
+build*/
+subprojects/build-libcspice
+subprojects/packagecache
+subprojects/cspice
+cspice.tar.Z
+cspice-src/
