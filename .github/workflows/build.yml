@@ -1,0 +1,38 @@
+name: Build Cross-Platform with Meson + Zig
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-13, windows-latest, windows-11-arm]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install Python and pip dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Meson
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --user meson
+
+      - name: Run Meson
+        run: |
+          meson setup build 
+
+      - name: Run Ninja
+        run: |
+          ninja -C build
+
+      - name: Run Test Program
+        run: |
+          ./build/test_cspice

@@ -5,7 +5,8 @@
 +project(
 +    'libcspice', 
 +    'c',
-+    version: '67'
++    version: '67',
++    meson_version: '>=0.63.0'
 +)
 +# Import FS to test for an existing directory
 +fs = import('fs')

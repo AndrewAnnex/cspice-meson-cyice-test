@@ -5,3 +5,4 @@ subprojects/packagecache
 subprojects/cspice
 cspice.tar.Z
 cspice-src/
+macos-arm/

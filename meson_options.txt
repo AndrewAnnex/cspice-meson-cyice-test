@@ -13,3 +13,9 @@ option('build_macos_arm',
        type : 'boolean',
        value : false,
        description : 'Force build for macOS arm64 (even on Intel hosts)')
+
+option('cspice_wrap',
+        type: 'string', 
+        value: '', 
+        description: 'Override the libcspice wrap name'
+        )

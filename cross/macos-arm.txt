@@ -1,7 +1,7 @@
 [binaries]
 c = 'clang'
 cpp = 'clang++'
-ar = 'libtool'
+ar = 'ar'
 strip = 'strip'
 
 [host_machine]
