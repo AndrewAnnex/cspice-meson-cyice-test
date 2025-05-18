@@ -2252,7 +2252,7 @@
 +m_dep = cc.find_library('m', required: false)
 +
 +libcspice = shared_library(
-+  'libcspice',
++  'cspice',
 +  cspice_src,
 +  include_directories: cspice_inc,
 +  dependencies : m_dep,
