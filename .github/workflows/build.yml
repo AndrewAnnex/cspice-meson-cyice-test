@@ -24,11 +24,26 @@ jobs:
       - name: Install Meson
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --user meson
+          python -m pip install pipx
+          python -m pipx ensurepath
+          pipx install meson
+        shell: bash
+
+      - name: Add pipx bin to PATH (cross-platform)
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            echo "$USERPROFILE\\.local\\bin" >> $GITHUB_PATH
+          else
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+          fi
+        shell: bash
+    
+      - name: Test Meson install
+        run: meson --version
 
       - name: Run Meson
         run: |
-          PATH=/Users/runner/Library/Python/3.13/bin:$PATH meson setup build 
+          meson setup build 
 
       - name: Run Ninja
         run: |

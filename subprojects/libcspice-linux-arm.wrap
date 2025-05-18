@@ -4,8 +4,8 @@ source_url = https://raw.githubusercontent.com/AndrewAnnex/cspice-release-mirror
 source_filename = N67_lin_x64_cspice.tar.gz
 source_hash = 756400612ceb8987eeeb4f0cfca10b6f153e6adc884c6a212173be8025e2db8c
 
-# Apply patch to inject a meson.build
-diff_files = meson-build.patch
+# Apply patch to inject a meson.build and cspice.def
+diff_files = meson-build.patch, cspice-def.patch
 
 [provide]
 dependency_names = libcspice-linux-arm
