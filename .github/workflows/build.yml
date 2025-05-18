@@ -37,6 +37,10 @@ jobs:
             echo "$HOME/.local/bin" >> $GITHUB_PATH
           fi
         shell: bash
+
+      - name: Prepare MSVC
+        if: startsWith(${{ matrix.os }}, 'windows')
+        uses: ilammy/msvc-dev-cmd@v1.13.0
     
       - name: Test Meson install
         run: meson --version
