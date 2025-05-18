@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,2270 @@
+@@ -0,0 +1,2272 @@
 +# Define the project
 +project(
 +    'libcspice', 
@@ -2272,3 +2272,5 @@
 +)
 +
 +meson.override_dependency('libcspice', cspice_dep)
++message('Registering libcspice override dependency')
++###################################################
