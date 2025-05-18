@@ -1,5 +1,5 @@
 [wrap-file]
-directory = libcspice
+directory = cspice
 source_url = https://raw.githubusercontent.com/AndrewAnnex/cspice-release-mirror/refs/heads/main/artifacts/N67_mac_x64_cspice.tar.gz
 source_filename = N67_mac_x64_cspice.tar.gz
 source_hash = 335c7ed199389799056f9ffb321e30da5e6c68045ab5d4b85db6c2bdabd1e179
