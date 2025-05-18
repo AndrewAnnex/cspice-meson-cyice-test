@@ -6,3 +6,6 @@ subprojects/cspice
 cspice.tar.Z
 cspice-src/
 macos-arm/
+dist/
+
+.DS_Store

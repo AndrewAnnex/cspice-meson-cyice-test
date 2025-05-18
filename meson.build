@@ -1,9 +1,11 @@
 project(
-    'test-cspice', 
-    'c',
-    meson_version: '>=0.63.0',
-    default_options: ['buildtype=release']
-)
+    'test_cyice', 
+    'c', 
+    'cython',
+    default_options : ['warning_level=3', 'buildtype=release']
+    )
+
+fs = import('fs')
 
 # get basic info
 host = host_machine
@@ -50,15 +52,61 @@ cspice_dep = dependency(
 # grab C compiler object
 cc = meson.get_compiler('c')
 
-# locate math lib if you want a proper dependency object (optional)
-m_dep = cc.find_library('m', required: false)
+m_dep = cc.find_library('m', required : false)
+if m_dep.found()
+  add_project_link_arguments('-lm', language : 'c')
+endif
 
-# Build the test executable
-test_exe = executable(
-    'test_cspice', 
-    'test_cspice.c',
-    dependencies      : [ cspice_dep, m_dep ],
-    install: false
+if host_machine.system() == 'darwin'
+  if cc.has_link_argument('-Wl,-dead_strip')
+    # Allow linker to strip unused symbols
+    add_project_link_arguments('-Wl,-dead_strip', language : ['c', 'cpp', 'fortran'])
+  endif
+endif
+
+py3 = import('python').find_installation(pure: false)
+py3_dep = py3.dependency()
+
+_numpy_dep = dependency('numpy')
+
+incdir_numpy = meson.get_external_property('numpy-include-dir', 'not-given')
+if incdir_numpy == 'not-given'
+  incdir_numpy = run_command(py3,
+    [
+      '-c',
+      '''import os
+import numpy as np
+incdir = os.path.relpath(np.get_include())
+print(incdir)
+  '''
+    ],
+    check: true
+  ).stdout().strip()
+
+  # We do need an absolute path to feed to `cc.find_library` below
+  _incdir_numpy_abs = run_command(py3,
+    ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
+    check: true
+  ).stdout().strip()
+else
+  _incdir_numpy_abs = incdir_numpy
+endif
+message('Numpy include dir: ' + _incdir_numpy_abs)
+
+inc_np = include_directories(_incdir_numpy_abs)
+# Don't use the deprecated NumPy C API. Define this to a fixed version instead of
+# NPY_API_VERSION in order not to break compilation for released SciPy versions
+# when NumPy introduces a new deprecation.
+numpy_nodepr_api = ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
+np_dep = declare_dependency(include_directories: inc_np, compile_args: numpy_nodepr_api)
+
+
+test_cyice = py3.extension_module(
+  'test_cyice',
+  sources: [
+    'src/test_cyice/test_cyice.pyx',
+  ],
+  dependencies: [py3_dep, np_dep, cspice_dep, m_dep],
+  include_directories: [include_directories('src'),],
+  install : true,
 )
-
-test('cspice sanity', test_exe)

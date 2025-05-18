@@ -1,0 +1,21 @@
+[build-system]
+build-backend = 'mesonpy'
+requires = ['meson-python', 'setuptools>=76.0.0', 'wheel', 'numpy']
+
+
+[project]
+name = 'test_cyice'
+version = '0.0.1'
+description = 'Test Cyice, using meson-python!'
+readme = 'README.md'
+requires-python = '>=3.11'
+license = {file = 'LICENSE'}
+authors = [
+  {name = 'Andrew Annex', email = 'andrew.annex@gmail.com'},
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+spiceypy = [ '*.so', '*.dylib']
