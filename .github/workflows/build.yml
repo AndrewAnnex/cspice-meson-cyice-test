@@ -1,4 +1,4 @@
-name: Build Cross-Platform with Meson + Zig
+name: Build with Meson
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Meson
         run: |
-          meson setup build 
+          PATH=/Users/runner/Library/Python/3.13/bin:$PATH meson setup build 
 
       - name: Run Ninja
         run: |
