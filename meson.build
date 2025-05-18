@@ -8,7 +8,7 @@ project(
 host = host_machine
 system = host.system()
 arch = host.cpu_family()
-is_unix    = system == 'linux'
+is_linux   = system == 'linux'
 is_windows = system == 'windows'
 is_macos   = system == 'darwin'
 is_cygwin  = system == 'cygwin'
