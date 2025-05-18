@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Ninja
         run: |
-          ninja -C build
+          ninja -v -C build
 
       - name: Run Test Program
         run: |

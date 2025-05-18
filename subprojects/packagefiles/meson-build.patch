@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,2272 @@
+@@ -0,0 +1,2278 @@
 +# Define the project
 +project(
 +    'libcspice', 
@@ -2250,7 +2250,12 @@
 +win_def = files('cspice.def')[0]
 +# locate math lib if you want a proper dependency object (optional)
 +m_dep = cc.find_library('m', required: false)
-+
++cspice_c_args = []
++if host_machine.system() == 'windows'
++  cspice_c_args += [ '-D_COMPLEX_DEFINED', '-DMSDOS', '-DOMIT_BLANK_CC', '-DNON_ANSI_STDIO', '-O2' ]
++else
++  cspice_c_args += [ '-std=c89', '-O2', '-fPIC', '-ansi', '-w' ]
++endif
 +libcspice = shared_library(
 +  'cspice',
 +  cspice_src,
@@ -2260,7 +2265,7 @@
 +  version: '67',
 +  darwin_versions: [67, 1],
 +  vs_module_defs: win_def, 
-+  c_args     : ['-std=c89', '-O3', '-fPIC', '-ansi', '-w'],
++  c_args: cspice_c_args,
 +  install: false 
 +)
 +
