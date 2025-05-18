@@ -1,12 +1,13 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,2278 @@
+@@ -0,0 +1,2279 @@
 +# Define the project
 +project(
 +    'libcspice', 
 +    'c',
 +    version: '67',
-+    meson_version: '>=0.63.0'
++    meson_version: '>=0.63.0',
++    default_options: ['buildtype=release']
 +)
 +# Import FS to test for an existing directory
 +fs = import('fs')
@@ -2252,7 +2253,7 @@
 +m_dep = cc.find_library('m', required: false)
 +cspice_c_args = []
 +if host_machine.system() == 'windows'
-+  cspice_c_args += [ '-D_COMPLEX_DEFINED', '-DMSDOS', '-DOMIT_BLANK_CC', '-DNON_ANSI_STDIO', '-O2' ]
++  cspice_c_args += [ '/Za', '-D_COMPLEX_DEFINED', '-DMSDOS', '-DOMIT_BLANK_CC', '-DNON_ANSI_STDIO', '-O2' ]
 +else
 +  cspice_c_args += [ '-std=c89', '-O2', '-fPIC', '-ansi', '-w' ]
 +endif

@@ -1,7 +1,8 @@
 project(
     'test-cspice', 
     'c',
-    meson_version: '>=0.63.0'
+    meson_version: '>=0.63.0',
+    default_options: ['buildtype=release']
 )
 
 # get basic info
