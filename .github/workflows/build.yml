@@ -15,20 +15,17 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-
       - name: Install Python and pip dependencies
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-
       - name: Install Meson
         run: |
           python -m pip install --upgrade pip
           python -m pip install pipx
           python -m pipx ensurepath
-          pipx install meson ninja
+          pipx install meson meson-python ninja cython numpy setuptools>=76.0.0 wheel build
         shell: bash
-
       - name: Add pipx bin to PATH (cross-platform)
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
@@ -37,22 +34,23 @@ jobs:
             echo "$HOME/.local/bin" >> $GITHUB_PATH
           fi
         shell: bash
-
       - name: Prepare MSVC
         if: startsWith(${{ matrix.os }}, 'windows')
         uses: ilammy/msvc-dev-cmd@v1.13.0
-    
       - name: Test Meson install
         run: meson --version
-
       - name: Run Meson
         run: |
           meson setup build 
-
       - name: Run Ninja
         run: |
           ninja -v -C build
-
       - name: Run Test Program
         run: |
           ./build/test_cspice
+      - name: Run python build
+        run: |
+          python -m build . 
+      - name: List the dist folder 
+        run: |
+          ls -lahtr dist/*

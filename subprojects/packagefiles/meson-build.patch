@@ -2253,7 +2253,7 @@
 +m_dep = cc.find_library('m', required: false)
 +cspice_c_args = []
 +if host_machine.system() == 'windows'
-+  cspice_c_args += [ '/Za', '-D_COMPLEX_DEFINED', '-DMSDOS', '-DOMIT_BLANK_CC', '-DNON_ANSI_STDIO', '-O2', '/Disatty=_isatty', '/Dfileno=_fileno', '/Denviron=_environ', '/Daccess=_access', '/Dmktemp=_mktemp' ]
++  cspice_c_args += [ '/Za', '/D_COMPLEX_DEFINED', '/DMSDOS', '/DOMIT_BLANK_CC', '/DNON_ANSI_STDIO', '/O2', '/Disatty=_isatty', '/Dfileno=_fileno', '/Denviron=_environ', '/Daccess=_access', '/Dmktemp=_mktemp' ]
 +else
 +  cspice_c_args += [ '-std=c89', '-O2', '-fPIC', '-ansi', '-w' ]
 +endif

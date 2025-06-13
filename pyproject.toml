@@ -1,6 +1,6 @@
 [build-system]
 build-backend = 'mesonpy'
-requires = ['meson-python', 'setuptools>=76.0.0', 'wheel', 'numpy']
+requires = ['meson-python', 'setuptools>=76.0.0', 'wheel', 'numpy', 'cython']
 
 
 [project]
@@ -18,4 +18,5 @@ authors = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-spiceypy = [ '*.so', '*.dylib']
+"*" = [ '*.so', '*.dylib']
+test_cyice = [ '*.so', '*.dylib']

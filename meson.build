@@ -64,14 +64,15 @@ if host_machine.system() == 'darwin'
   endif
 endif
 
-py3 = import('python').find_installation(pure: false)
-py3_dep = py3.dependency()
+py_mod = import('python')
+py = py_mod.find_installation(pure: false)
+py_dep = py.dependency()
 
 _numpy_dep = dependency('numpy')
 
 incdir_numpy = meson.get_external_property('numpy-include-dir', 'not-given')
 if incdir_numpy == 'not-given'
-  incdir_numpy = run_command(py3,
+  incdir_numpy = run_command(py,
     [
       '-c',
       '''import os
@@ -84,7 +85,7 @@ print(incdir)
   ).stdout().strip()
 
   # We do need an absolute path to feed to `cc.find_library` below
-  _incdir_numpy_abs = run_command(py3,
+  _incdir_numpy_abs = run_command(py,
     ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
     check: true
   ).stdout().strip()
@@ -101,12 +102,17 @@ numpy_nodepr_api = ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
 np_dep = declare_dependency(include_directories: inc_np, compile_args: numpy_nodepr_api)
 
 
-test_cyice = py3.extension_module(
+test_cyice = py.extension_module(
   'test_cyice',
   sources: [
     'src/test_cyice/test_cyice.pyx',
   ],
-  dependencies: [py3_dep, np_dep, cspice_dep, m_dep],
+  dependencies: [
+    py_dep, 
+    np_dep, 
+    cspice_dep, 
+    m_dep
+  ],
   include_directories: [include_directories('src'),],
   install : true,
 )
