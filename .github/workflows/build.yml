@@ -19,10 +19,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Install Meson
+      - name: Install pip deps
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pipx cython numpy setuptools>=76.0.0 wheel build
+          python -m pip install cython numpy setuptools>=76.0.0 wheel build
+        shell: bash
+      - name: Install Meson
+        run: |
+          python -m pip install pipx 
           python -m pipx ensurepath
           pipx install meson ninja 
         shell: bash
