@@ -76,8 +76,8 @@ if incdir_numpy == 'not-given'
     [
       '-c',
       '''import os
-import numpy as np
-incdir = os.path.relpath(np.get_include())
+import numpy 
+incdir = os.path.relpath(numpy.get_include())
 print(incdir)
   '''
     ],

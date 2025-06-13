@@ -1,6 +1,6 @@
 [build-system]
 build-backend = 'mesonpy'
-requires = ['meson-python', 'setuptools>=76.0.0', 'wheel', 'numpy', 'cython']
+requires = ['meson-python', 'setuptools>=76.0.0', 'wheel', 'numpy>=2.0.0', 'cython']
 
 
 [project]
