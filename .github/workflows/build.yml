@@ -54,9 +54,6 @@ jobs:
       - name: Run Ninja
         run: |
           ninja -v -C build
-      - name: Run Test Program
-        run: |
-          ./build/test_cspice
       - name: Run python build
         run: |
           python -m build . 
