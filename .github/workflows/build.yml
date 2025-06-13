@@ -26,6 +26,9 @@ jobs:
         run: |
           python -m pip install cython numpy setuptools>=76.0.0 wheel build meson-python
         shell: bash
+      - name: list deps
+        run: |
+          python -m pip list
       - name: Install Meson
         run: |
           python -m pip install pipx 
