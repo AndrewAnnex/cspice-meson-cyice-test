@@ -1,12 +1,12 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,2279 @@
+@@ -0,0 +1,2281 @@
 +# Define the project
 +project(
 +    'libcspice', 
 +    'c',
 +    version: '67',
-+    meson_version: '>=0.63.0',
++    meson_version: '>=1.2.0',
 +    default_options: ['buildtype=release']
 +)
 +# Import FS to test for an existing directory
@@ -2257,6 +2257,7 @@
 +else
 +  cspice_c_args += [ '-std=c89', '-O2', '-fPIC', '-ansi', '-w' ]
 +endif
++only_main = get_option('only_install_main_lib')
 +libcspice = shared_library(
 +  'cspice',
 +  cspice_src,
@@ -2267,7 +2268,8 @@
 +  darwin_versions: [67, 1],
 +  vs_module_defs: win_def, 
 +  c_args: cspice_c_args,
-+  install: false 
++  install: only_main,  # install only if the flag is on
++  install_dir: get_option('lib_install_dir'),
 +)
 +
 +# declare a dependency so other subprojects can link against it

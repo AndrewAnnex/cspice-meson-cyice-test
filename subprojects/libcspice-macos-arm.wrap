@@ -5,7 +5,7 @@ source_filename = N67_mac_arm_cspice.tar.gz
 source_hash = 7ec967301f24ddfa56a6530ed1662e9bbb74405f18b5790d99588aafdaa59c05
 
 # Apply patch to inject a meson.build and cspice.def
-diff_files = meson-build.patch, cspice-def.patch
+diff_files = meson-build.patch, meson-options.patch, cspice-def.patch
 
 [provide]
 dependency_names = libcspice-macos-arm

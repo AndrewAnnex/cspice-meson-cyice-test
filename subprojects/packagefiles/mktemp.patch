@@ -1,5 +1,5 @@
---- a/cspice/src/cspice/open.c	2019-11-02 10:57:10.073886963 +0300
-+++ b/cspice/src/cspice/open.c	2019-11-02 10:57:49.230398941 +0300
+--- a/cspice/src/cspice/open.c
++++ b/cspice/src/cspice/open.c
 @@ -324,7 +324,7 @@
  #ifdef NON_ANSI_STDIO
  

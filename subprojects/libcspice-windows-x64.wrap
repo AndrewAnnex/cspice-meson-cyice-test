@@ -5,7 +5,7 @@ source_filename = N67_win_x64_cspice.zip
 source_hash = 98d60b814b412fa55294aeaaeb7dab46d849cc87a8b709ffe835d08de17625dc
 
 # Apply patch to inject a meson.build and cspice.def
-diff_files = meson-build.patch, cspice-def-dos.patch, isatty.patch, mktemp.patch
+diff_files = meson-build.patch, meson-options.patch, cspice-def-dos.patch, isatty.patch, mktemp.patch
 
 [provide]
 dependency_names = libcspice-windows-x64

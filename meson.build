@@ -5,9 +5,16 @@ project(
     default_options : ['warning_level=3', 'buildtype=release'],
     license : 'MIT',
     license_files: 'LICENSE',
-    version: '7.1.0'
+    version: '7.1.0',
+    meson_version: '>=1.2.0'
     )
 
+# python stuff
+py_mod = import('python')
+py = py_mod.find_installation(pure: false)
+py_dep = py.dependency(required: true)
+
+# cspice stuff
 fs = import('fs')
 
 # get basic info
@@ -41,16 +48,15 @@ elif is_windows
 else
   error('Unsupported system or architecture: @0@/@1@'.format(system, arch))
 endif
-# allow potential override
-override = get_option('cspice_wrap')
-if override != ''
-  cspice_wrap_name = override
-endif
 
-cspice_dep = dependency(
-    'libcspice', 
-    fallback: cspice_wrap_name,
+libcspice = subproject(
+  cspice_wrap_name,
+  default_options: {
+    'only_install_main_lib': true,
+    'lib_instal_dir': py.get_install_dir() / 'test_cyice/utils',
+  }
 )
+cspice_dep = libcspice.get_variable('cspice_dep')
 
 # grab C compiler object
 cc = meson.get_compiler('c')
@@ -67,9 +73,7 @@ if host_machine.system() == 'darwin'
   endif
 endif
 
-py_mod = import('python')
-py = py_mod.find_installation(pure: false)
-py_dep = py.dependency(required: true)
+
 
 ## numpy stuff
 # get base numpy dep
@@ -93,4 +97,6 @@ test_cyice = py.extension_module(
   ],
   include_directories: [include_directories('src'),],
   install : true,
+  subdir: 'test_cyice/utils',
+  install_rpath: '$ORIGIN'
 )

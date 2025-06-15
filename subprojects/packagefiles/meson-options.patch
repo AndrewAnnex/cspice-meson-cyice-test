@@ -1,0 +1,14 @@
+--- /dev/null
++++ b/meson_options.txt
+@@ -0,0 +1,11 @@
++option(
++  'only_install_main_lib',
++  type: 'boolean',
++  description: 'When true, install only the main shared library (no headers, no extras)',
++  value: false
++)
++option(
++  'lib_install_dir',
++  type: 'string',
++  description: 'Path where to install the shared library',
++)

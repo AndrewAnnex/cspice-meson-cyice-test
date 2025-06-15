@@ -5,7 +5,7 @@ source_filename = N67_cyg_x64_cspice.tar.gz
 source_hash = 78ca611638653e1b86347d2b58d8bc761c256e5d0037314fcb7c3eedb3e981bd
 
 # Apply patch to inject a meson.build and cspice.def
-diff_files = meson-build.patch, cspice-def-dos.patch
+diff_files = meson-build.patch, meson-options.patch, cspice-def-dos.patch
 
 [provide]
 dependency_names = libcspice-cygwin-x64
