@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/meson.build
-@@ -0,0 +1,2281 @@
+@@ -0,0 +1,2284 @@
 +# Define the project
 +project(
 +    'libcspice', 
@@ -2258,6 +2258,9 @@
 +  cspice_c_args += [ '-std=c89', '-O2', '-fPIC', '-ansi', '-w' ]
 +endif
 +only_main = get_option('only_install_main_lib')
++lib_install_dir = get_option('lib_install_dir')
++message('only_install_main_lib: ', only_main)
++message('lib_install_dir: ', lib_install_dir)
 +libcspice = shared_library(
 +  'cspice',
 +  cspice_src,
@@ -2269,7 +2272,7 @@
 +  vs_module_defs: win_def, 
 +  c_args: cspice_c_args,
 +  install: only_main,  # install only if the flag is on
-+  install_dir: get_option('lib_install_dir'),
++  install_dir: lib_install_dir,
 +)
 +
 +# declare a dependency so other subprojects can link against it

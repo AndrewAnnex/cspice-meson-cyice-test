@@ -14,6 +14,9 @@ authors = [
   {name = 'Andrew Annex', email = 'andrew.annex@gmail.com'},
 ]
 
+[tool.meson-python]
+allow-windows-internal-shared-libs = true
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

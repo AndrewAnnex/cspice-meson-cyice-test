@@ -14,6 +14,24 @@ py_mod = import('python')
 py = py_mod.find_installation(pure: false)
 py_dep = py.dependency(required: true)
 
+# cython stuff
+cy = meson.get_compiler('cython')
+
+# c stuff
+cc = meson.get_compiler('c')
+
+m_dep = cc.find_library('m', required : false)
+if m_dep.found()
+  add_project_link_arguments('-lm', language : 'c')
+endif
+
+if host_machine.system() == 'darwin'
+  if cc.has_link_argument('-Wl,-dead_strip')
+    # Allow linker to strip unused symbols
+    add_project_link_arguments('-Wl,-dead_strip', language : ['c', 'cpp', 'fortran'])
+  endif
+endif
+
 # cspice stuff
 fs = import('fs')
 
@@ -53,27 +71,11 @@ libcspice = subproject(
   cspice_wrap_name,
   default_options: {
     'only_install_main_lib': true,
-    'lib_instal_dir': py.get_install_dir() / 'test_cyice/utils',
+    'lib_install_dir': py.get_install_dir(pure: false) / 'test_cyice/utils',
   }
 )
 cspice_dep = libcspice.get_variable('cspice_dep')
-
-# grab C compiler object
-cc = meson.get_compiler('c')
-
-m_dep = cc.find_library('m', required : false)
-if m_dep.found()
-  add_project_link_arguments('-lm', language : 'c')
-endif
-
-if host_machine.system() == 'darwin'
-  if cc.has_link_argument('-Wl,-dead_strip')
-    # Allow linker to strip unused symbols
-    add_project_link_arguments('-Wl,-dead_strip', language : ['c', 'cpp', 'fortran'])
-  endif
-endif
-
-
+cspice_shared = libcspice.get_variable('libcspice')
 
 ## numpy stuff
 # get base numpy dep
@@ -83,6 +85,8 @@ numpy_dep = declare_dependency(
   dependencies: base_numpy_dep,
   compile_args: ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
 )
+
+# extension module stuff
 
 test_cyice = py.extension_module(
   'test_cyice',
@@ -96,7 +100,15 @@ test_cyice = py.extension_module(
     m_dep
   ],
   include_directories: [include_directories('src'),],
-  install : true,
+  link_with: cspice_shared,
   subdir: 'test_cyice/utils',
+  install : true,
   install_rpath: '$ORIGIN'
 )
+
+py.install_sources(
+   pure: false,    # Will be installed next to binaries
+   subdir: 'test_cyice'  # Folder relative to site-packages to install to
+)
+
+subdir('src/test_cyice')
