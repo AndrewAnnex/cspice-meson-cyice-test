@@ -60,3 +60,6 @@ jobs:
       - name: List the dist folder 
         run: |
           ls -lahtr dist/*
+      - name: Run python install
+        run: |
+          pip install dist/test_cyice-0.0.1*.whl

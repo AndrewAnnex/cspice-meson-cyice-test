@@ -2,7 +2,10 @@ project(
     'test_cyice', 
     'c', 
     'cython',
-    default_options : ['warning_level=3', 'buildtype=release']
+    default_options : ['warning_level=3', 'buildtype=release'],
+    license : 'MIT',
+    license_files: 'LICENSE',
+    version: '7.1.0'
     )
 
 fs = import('fs')
@@ -66,41 +69,16 @@ endif
 
 py_mod = import('python')
 py = py_mod.find_installation(pure: false)
-py_dep = py.dependency()
+py_dep = py.dependency(required: true)
 
-_numpy_dep = dependency('numpy')
-
-incdir_numpy = meson.get_external_property('numpy-include-dir', 'not-given')
-if incdir_numpy == 'not-given'
-  incdir_numpy = run_command(py,
-    [
-      '-c',
-      '''import os
-import numpy 
-incdir = os.path.relpath(numpy.get_include())
-print(incdir)
-  '''
-    ],
-    check: true
-  ).stdout().strip()
-
-  # We do need an absolute path to feed to `cc.find_library` below
-  _incdir_numpy_abs = run_command(py,
-    ['-c', 'import os; os.chdir(".."); import numpy; print(numpy.get_include())'],
-    check: true
-  ).stdout().strip()
-else
-  _incdir_numpy_abs = incdir_numpy
-endif
-message('Numpy include dir: ' + _incdir_numpy_abs)
-
-inc_np = include_directories(_incdir_numpy_abs)
-# Don't use the deprecated NumPy C API. Define this to a fixed version instead of
-# NPY_API_VERSION in order not to break compilation for released SciPy versions
-# when NumPy introduces a new deprecation.
-numpy_nodepr_api = ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
-np_dep = declare_dependency(include_directories: inc_np, compile_args: numpy_nodepr_api)
-
+## numpy stuff
+# get base numpy dep
+base_numpy_dep = dependency('numpy', required: true)
+# declare numpy dep
+numpy_dep = declare_dependency(
+  dependencies: base_numpy_dep,
+  compile_args: ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
+)
 
 test_cyice = py.extension_module(
   'test_cyice',
@@ -109,7 +87,7 @@ test_cyice = py.extension_module(
   ],
   dependencies: [
     py_dep, 
-    np_dep, 
+    numpy_dep, 
     cspice_dep, 
     m_dep
   ],
