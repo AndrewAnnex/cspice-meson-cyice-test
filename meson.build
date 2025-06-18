@@ -13,6 +13,8 @@ project(
 py_mod = import('python')
 py = py_mod.find_installation(pure: false)
 py_dep = py.dependency(required: true)
+py_install_dir = py.get_install_dir(subdir: 'test_cyice/utils', pure: false) 
+message('py install dir: ', py_install_dir)
 
 # cython stuff
 cy = meson.get_compiler('cython')
@@ -67,15 +69,16 @@ else
   error('Unsupported system or architecture: @0@/@1@'.format(system, arch))
 endif
 
-libcspice = subproject(
+libcspice_sub = subproject(
   cspice_wrap_name,
   default_options: {
     'only_install_main_lib': true,
-    'lib_install_dir': py.get_install_dir(pure: false) / 'test_cyice/utils',
+    'lib_install_dir': py_install_dir,
   }
 )
-cspice_dep = libcspice.get_variable('cspice_dep')
-cspice_shared = libcspice.get_variable('libcspice')
+cspice_dep = libcspice_sub.get_variable('cspice_dep')
+cspice_shared = libcspice_sub.get_variable('libcspice')
+cspice_headers = libcspice_sub.get_variable('cspice_inc')
 
 ## numpy stuff
 # get base numpy dep
@@ -86,29 +89,5 @@ numpy_dep = declare_dependency(
   compile_args: ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
 )
 
-# extension module stuff
-
-test_cyice = py.extension_module(
-  'test_cyice',
-  sources: [
-    'src/test_cyice/test_cyice.pyx',
-  ],
-  dependencies: [
-    py_dep, 
-    numpy_dep, 
-    cspice_dep, 
-    m_dep
-  ],
-  include_directories: [include_directories('src'),],
-  link_with: cspice_shared,
-  subdir: 'test_cyice/utils',
-  install : true,
-  install_rpath: '$ORIGIN'
-)
-
-py.install_sources(
-   pure: false,    # Will be installed next to binaries
-   subdir: 'test_cyice'  # Folder relative to site-packages to install to
-)
 
 subdir('src/test_cyice')
