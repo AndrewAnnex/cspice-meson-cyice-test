@@ -69,11 +69,13 @@ else
   error('Unsupported system or architecture: @0@/@1@'.format(system, arch))
 endif
 
+message('install_dir: ', py_install_dir)
+
 libcspice_sub = subproject(
   cspice_wrap_name,
   default_options: {
     'only_install_main_lib': true,
-    'lib_install_dir': py_install_dir,
+    'install_dir': py_install_dir,
   }
 )
 cspice_dep = libcspice_sub.get_variable('cspice_dep')

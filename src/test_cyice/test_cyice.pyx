@@ -10,7 +10,7 @@
 # cython: warn.multiple_declarators = True
 # cython: show_performance_hints = True
 # cython: always_allow_keywords = False
-# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION
+# distutils: define_macros=NPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION
 
 
 from libc.stdlib cimport malloc, free
